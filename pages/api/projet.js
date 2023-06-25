@@ -44,6 +44,7 @@ export default async function handler(req, res) {
     } catch (error) {
       clientMongoDB.close();
       res.status(500).json({ message: "Un problème est survenu." });
+      return;
     }
 
     clientMongoDB.close();
@@ -51,6 +52,7 @@ export default async function handler(req, res) {
       message: "Projet ajouté avec succès.",
       projet: nouveauProjet,
     });
+    return;
   }
   res.status(405).json({
     message: "Une erreur est survenue.",
