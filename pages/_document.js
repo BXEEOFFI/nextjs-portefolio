@@ -1,13 +1,18 @@
-import { Html, Head, Main, NextScript } from 'next/document'
+import Document, {
+  Html,
+  Head,
+  Main,
+  NextScript,
+} from "next/document";
 
-export default function Document() {
+export default function MonDocument() {
   return (
-    <Html lang="en">
+    <Html lang="fr">
       <Head />
       <body>
         <Main />
         <NextScript />
       </body>
     </Html>
-  )
+  );
 }
