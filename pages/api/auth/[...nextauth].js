@@ -1,10 +1,10 @@
 import NextAuth from "next-auth";
-import Providers from "next-auth/providers";
+import CredentialsProvider from "next-auth/providers/credentials";
 import { connectToDatabase } from "@/helpers/mongodb";
 import { verifyPassword } from "@/helpers/auth";
-export default NextAuth({
+export const authOptions = {
   providers: [
-    Providers.Credentials({
+    CredentialsProvider({
       async authorize(credentials) {
         const { email, password } = credentials;
 
@@ -40,14 +40,20 @@ export default NextAuth({
       },
     }),
   ],
+  session: {
+    jwt: true,
+  },
   callbacks: {
-    jwt: async (token, user) => {
-      user && (token.user = user);
+    jwt: async ({ token, user, account, profile, isNewUser }) => {
+      if (user) {
+        token.user = user;
+      }
       return token;
     },
-    session: async (session, user) => {
-      session.user = user.user;
+    session: async ({ session, token }) => {
+      session.user = token.user;
       return session;
     },
   },
-});
+};
+export default NextAuth(authOptions);

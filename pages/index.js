@@ -2,8 +2,10 @@ import { connectToDatabase } from "@/helpers/mongodb";
 import CarteDeProjet from "@/components/ui/CarteDeProjet/CarteDeProjet";
 import Head from "next/head";
 import Image from "next/image";
-import { getSession, signOut } from "next-auth/client";
+import { getServerSession } from "next-auth/next";
+import { signOut } from "next-auth/react";
 import { useState } from "react";
+import { authOptions } from "./api/auth/[...nextauth]";
 import { SpinnerDotted } from "spinners-react";
 export default function Index(props) {
   const [isLoading, setIsLoading] = useState(false);
@@ -145,7 +147,11 @@ export default function Index(props) {
 
 export async function getServerSideProps(context) {
   let projets;
-  const session = await getSession({ req: context.req });
+  const session = await getServerSession(
+    context.req,
+    context.res,
+    authOptions
+  );
   let utilisateur;
   if (session) {
     utilisateur = session.user;

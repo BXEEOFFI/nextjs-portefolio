@@ -1,11 +1,11 @@
 import classes from "./Header.module.css";
 import Link from "next/link";
-import { signOut } from "next-auth/client";
+import { signOut } from "next-auth/react";
 import { useRouter } from "next/router";
-import { useSession } from "next-auth/client";
+import { useSession } from "next-auth/react";
 export default function Header() {
   const router = useRouter();
-  const [session] = useSession();
+  const { data: session } = useSession();
   const onLogoutClickedHandler = () => {
     signOut();
     router.push("/");

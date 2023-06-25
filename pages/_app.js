@@ -1,13 +1,15 @@
 import "@/styles/default.css";
-import { Provider } from "next-auth/client";
+import { SessionProvider } from "next-auth/react";
 //Composant
 import Layout from "@/components/ui/Layout/Layout";
 export default function App({ Component, pageProps }) {
   return (
-    <Provider session={pageProps.session}>
+    <SessionProvider
+      session={pageProps.session}
+      refetchInterval={5 * 60}>
       <Layout>
         <Component {...pageProps} />
       </Layout>
-    </Provider>
+    </SessionProvider>
   );
 }

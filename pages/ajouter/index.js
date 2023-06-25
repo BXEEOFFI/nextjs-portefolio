@@ -5,7 +5,8 @@ import { useEffect, useState } from "react";
 import Error from "@/components/ui/Error/Error";
 import { useRouter } from "next/router";
 import Button from "@/components/ui/Button/Button";
-import { getSession } from "next-auth/client";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "../api/auth/[...nextauth]";
 export default function Ajouter() {
   const {
     register,
@@ -156,7 +157,11 @@ export default function Ajouter() {
 }
 
 export async function getServerSideProps(context) {
-  const session = await getSession({ req: context.req });
+  const session = await getServerSession(
+    context.req,
+    context.res,
+    authOptions
+  );
   if (!session) {
     return {
       redirect: {

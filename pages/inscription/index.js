@@ -5,7 +5,8 @@ import { useForm } from "react-hook-form";
 import Error from "@/components/ui/Error/Error";
 import Link from "next/link";
 import { SpinnerDotted } from "spinners-react";
-import { getSession } from "next-auth/client";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "../api/auth/[...nextauth]";
 export default function Inscription() {
   const {
     register,
@@ -128,7 +129,11 @@ export default function Inscription() {
 }
 
 export async function getServerSideProps(context) {
-  const session = await getSession({ req: context.req });
+  const session = await getServerSession(
+    context.req,
+    context.res,
+    authOptions
+  );
 
   if (session) {
     return {

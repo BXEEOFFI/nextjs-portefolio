@@ -1,12 +1,13 @@
 import Button from "@/components/ui/Button/Button";
 import Head from "next/head";
 import { useForm } from "react-hook-form";
-import { signIn } from "next-auth/client";
+import { signIn } from "next-auth/react";
 import { useState } from "react";
 import { SpinnerDotted } from "spinners-react";
 import { useRouter } from "next/router";
 import Error from "@/components/ui/Error/Error";
-import { getSession } from "next-auth/client";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "../api/auth/[...nextauth]";
 export default function Connexion() {
   const {
     register,
@@ -103,7 +104,11 @@ export default function Connexion() {
 }
 
 export async function getServerSideProps(context) {
-  const session = await getSession({ req: context.req });
+  const session = await getServerSession(
+    context.req,
+    context.res,
+    authOptions
+  );
 
   if (session) {
     return {

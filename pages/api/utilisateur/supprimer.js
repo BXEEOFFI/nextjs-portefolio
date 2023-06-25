@@ -1,8 +1,9 @@
-import { getSession } from "next-auth/client";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "../auth/[...nextauth]";
 import { connectToDatabase } from "@/helpers/mongodb";
 export default async function handler(req, res) {
   if (req.method === "DELETE") {
-    const session = await getSession({ req: req });
+    const session = await getServerSession(req, res, authOptions);
 
     if (!session) {
       res
